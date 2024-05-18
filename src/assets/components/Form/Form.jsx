@@ -7,49 +7,45 @@ function Form() {
 	const [wasInputTextTouch, setWasInputTextTouch] = useState(false)
 
 	const inputChangeHandler = (event) => {
-		setInputText(event.target.value)
+		setInputText(event.target.value.toUpperCase())
 	};
 	const isEnteredTextValid = inputText.trim() !== ""
 
-	const isNameInputInvalid = !isEnteredTextValid && wasInputTextTouch
+	const inputTextInvalid = !isEnteredTextValid && wasInputTextTouch
 
 	const inputTextLostFocusHandler = () => {
 		setWasInputTextTouch(true)
 	};
 
-	const inputNameClasses = isNameInputInvalid
-		? style.form + ' ' +  style.invalid
-		: style.form
+	const inputNameClasses = inputTextInvalid
+		? style.input + ' ' +  style.invalid
+		: style.input
 
-	let isFormValid = false
-
-	if (isEnteredTextValid) {
-		isFormValid = true
-	}
+	
 	const formSubmitHandler = (event) => {
 		event.preventDefault()
 		setWasInputTextTouch(true)
+		console.log(inputText)
+		// setInputText('')
 		if (!isEnteredTextValid) {
 		console.log('error')
 		return false
-		}
-		setWasInputTextTouch(false)
-		setInputText('')
+	}
 	}
 
 
 	return (
 	<>
-		<form onSubmit={formSubmitHandler}>
+		<form className={style.form} onSubmit={formSubmitHandler}>
 			<label htmlFor='text'>Введите текст</label>
 			<input type='text'
 			id ='text'
 			className={inputNameClasses}
 			onChange={inputChangeHandler}
 			onBlur={inputTextLostFocusHandler}/>
-			{isNameInputInvalid && 
+			{inputTextInvalid && 
 			<span>Введите текст, пожалуйста</span>}
-			<input type='submit' value='Сохранить'/>
+			<button onClick={()=> inputText} type='submit'>Сохранить</button>
 		</form>
 		<p>{inputText}</p>
 	</>
